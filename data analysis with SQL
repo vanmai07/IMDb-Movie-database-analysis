@@ -1,0 +1,121 @@
+#Question 1: Can you get all data about movies?
+SELECT *
+FROM movies
+
+
+#Question 2: How do you get all data about directors?
+SELECT *
+FROM directors
+
+
+ #Question 3: Check how many movies are in iMDB.
+SELECT COUNT (*)
+FROM movies
+#Answer 3: 4773 movies
+
+
+#Question 4: Find these 3 directors: James Cameron; Luc Besson; John Woo
+SELECT *
+FROM directors WHERE name = 'James Cameron' OR NAME = 'Luc Besson' OR name = 'John Woo'
+#Answer 4:
+name	id	gender	uid	department
+James Cameron"	"4762"	"2"	"2710"	"Directing"
+"John Woo"	"4893"	"2"	"11401"	"Directing"
+"Luc Besson"	"4949"	"2"	"59"	"Directing"
+
+
+ #Question 5: Find all directors with name starting with Steven.
+SELECT *
+FROM directors WHERE name LIKE 'Steven%'
+#Answer 5:
+name	id	gender	uid	department
+"Steven Spielberg"	"4799"	"2"	"488"	"Directing"
+"Steven Soderbergh"	"4909"	"2"	"1884"	"Directing"
+"Steven Brill"	"5013"	"2"	"32593"	"Directing"
+"Steven Zaillian"	"5117"	"2"	"2260"	"Directing"
+"Steven Quale"	"5216"	"2"	"93214"	"Directing"
+"Steven Seagal"	"5221"	"2"	"23880"	"Directing"
+"Steven E. de Souza"	"5390"	"2"	"1726"	"Directing"
+"Steven Shainberg"	"5803"	"2"	"67795"	"Directing"
+"Steven R. Monroe"	"6713"	"2"	"88039"	"Directing"
+
+
+#Question 6: Count female directors.
+SELECT COUNT (*)
+FROM directors WHERE gender = '1'
+#Answer 6: 150 female directors
+
+
+#Question 7: Find the name of the 10th first women directors?
+SELECT name
+FROM directors
+WHERE gender = '1'
+LIMIT 10
+#Answer 7:
+"Brenda Chapman"
+"Lilly Wachowski"
+"Jennifer Yuh Nelson"
+"Kathryn Bigelow"
+"Nancy Meyers"
+"Jill Culton"
+"Mimi Leder"
+"Vicky Jenson"
+"Betty Thomas"
+"Angelina Jolie"
+
+
+ #Question 8: What are the 3 most popular movies?
+SELECT *
+FROM movies ORDER by popularity DESC LIMIT 3
+id	Title	Budget	Popularity	Release date	Revenue	Vote	Vote cnt
+"44143"	"Minions"	"74000000"	"875"	"2015-06-17"	"1156730962"	"6.4"	"4571"
+"43692"	"Interstellar"	"165000000"	"724"	"2014-11-05"	"675120017"	"8.1"	"10867"
+"44385"	"Deadpool"	"58000000"	"514"	"2016-02-09"	"783112979"	"7.4"	"10995"
+
+
+#Question 9: What are the 3 most bankable movies (with the highest revenue)?
+SELECT *
+FROM movies ORDER by revenue DESC LIMIT 3
+#Answer 9:
+id	Title	Budget	Popularity	Release date	Revenue	Vote 	Vote cnt
+"43597"	"Avatar"	"237000000"	"150"	"2009-12-10"	"2787965087"	"7.2"	"11800"
+"43622"	"Titanic"	"200000000"	"100"	"1997-11-18"	"1845034188"	"7.5"	"7562"
+"43613"	"The Avengers"	"220000000"	"144"	"2012-04-25"	"1519557910"	"7.4"	"11776"
+
+#Question 10: What is the most awarded average vote since the January 1st, 2000?
+SELECT vote_average, SUM (vote_count) AS total_vote
+FROM movies
+WHERE release_date > '2000-01-01'
+GROUP BY vote_average
+ORDER BY total_vote DESC LIMIT 1
+#Answer 10:
+Vote_average	Total_vote
+"6.6"	"139929"
+
+
+#Question 11: Which movie(s) were directed by Brenda Chapman?
+SELECT movies.original_title
+FROM movies JOIN directors ON movies.director_id = directors.id
+WHERE directors.name = 'Brenda Chapman'
+#Answer 11: Brave
+
+
+#Question 12: Which director made the most movies?
+SELECT name, COUNT (*) AS qty 
+FROM directors JOIN movies ON directors.id = movies.director_id
+GROUP BY director_id
+ORDER BY qty DESC LIMIT 1
+#Answer 12:
+Name 	QTY
+"Steven Spielberg"	"27"
+
+
+#Question 13: Which director is the most bankable?
+SELECT name, SUM (revenue) AS total_revenue
+FROM directors JOIN movies ON directors.id = movies.director_id
+GROUP BY director_id
+ORDER BY total_revenue DESC LIMIT 1
+#Answer 13:
+Name 	Total revenue
+"Steven Spielberg"	"9147393164"
+
